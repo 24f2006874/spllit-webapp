@@ -1,0 +1,353 @@
+/* ===== Container ===== */
+.login-container {
+  min-height: 100vh;
+  background: #FAF9F7;
+  color: #1A1A1A;
+}
+
+/* ===== Navigation ===== */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: #FAF9F7;
+}
+
+.nav-left .logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  height: 60px;
+  width: 150px;
+  max-width: 250px;
+  object-fit: fill;
+}
+
+.nav-center {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: #333;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 400;
+  letter-spacing: 0.3px;
+  transition: color 0.2s ease;
+}
+
+.nav-item:hover {
+  color: #1A1A1A;
+}
+
+.nav-right {
+  display: flex;
+  gap: 1rem;
+}
+
+/* ===== Buttons ===== */
+.btn {
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  border: none;
+  font-weight: 500;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: #1A1A1A;
+  border: 1px solid #ddd;
+}
+
+.btn-secondary:hover {
+  background: #f0f0f0;
+}
+
+.btn-primary {
+  background: #1A1A1A;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #333;
+}
+
+/* ===== Main Content ===== */
+.main-content {
+  display: flex;
+  min-height: calc(100vh - 73px);
+  padding: 3rem 4rem;
+  gap: 4rem;
+}
+
+.left-section {
+  flex: 1;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.hero-title {
+  font-size: 4rem;
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+  color: #1A1A1A;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  color: #666;
+  margin-bottom: 2.5rem;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+/* ===== Login Card ===== */
+.login-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  margin-bottom: 1.5rem;
+}
+
+/* ===== Alert Messages ===== */
+.error-message {
+  background: #fee;
+  border: 1px solid #fcc;
+  color: #c33;
+  padding: 0.85rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.success-message {
+  background: #efe;
+  border: 1px solid #cfc;
+  color: #3c3;
+  padding: 0.85rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.btn-google {
+  width: 100%;
+  padding: 0.85rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-google:hover:not(:disabled) {
+  background: #f9f9f9;
+  border-color: #1A1A1A;
+}
+
+.btn-google:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.google-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 1.25rem 0;
+  color: #999;
+  font-size: 0.85rem;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #e0e0e0;
+}
+
+.divider span {
+  padding: 0 1rem;
+}
+
+.email-input {
+  width: 100%;
+  padding: 0.85rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  margin-bottom: 0.75rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.email-input:focus {
+  border-color: #1A1A1A;
+  box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.1);
+}
+
+.email-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-email {
+  width: 100%;
+  padding: 0.85rem;
+  background: #1A1A1A;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-email:hover:not(:disabled) {
+  background: #333;
+}
+
+.btn-email:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ===== Auth Toggle ===== */
+.auth-toggle {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.auth-toggle p {
+  margin: 0;
+}
+
+.toggle-button {
+  background: none;
+  border: none;
+  color: #1A1A1A;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 0.9rem;
+  transition: color 0.2s ease;
+  padding: 0;
+}
+
+.toggle-button:hover {
+  color: #D97757;
+}
+
+.btn-desktop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  width: 100%;
+  transition: all 0.2s ease;
+}
+
+.btn-desktop:hover:not(:disabled) {
+  background: #f9f9f9;
+  border-color: #1A1A1A;
+}
+
+.btn-desktop:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ===== Right Section - App Preview ===== */
+/* Right Section - App Preview */
+.right-section {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-preview-placeholder {
+  width: 100%;
+  max-width: 650px;
+  height: 520px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
+  border: 1px solid #e8e8e8;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8f9fa;
+  background-image: 
+    linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 1024px) {
+  .main-content {
+    flex-direction: column;
+    padding: 2rem;
+  }
+
+  .right-section {
+    display: none;
+  }
+
+  .nav-center {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .navbar {
+    padding: 1rem;
+  }
+
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .nav-right .btn-secondary {
+    display: none;
+  }
+}

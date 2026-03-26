@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Socket.IO Test</title>
+  <script src="https://cdn.socket.io/4.8.0/socket.io.min.js"></script>
+</head>
+<body>
+  <h1>Socket.IO Connection Test</h1>
+  <div id="status">Connecting...</div>
+  <br>
+  <input type="text" id="roomId" placeholder="Room ID" value="test-room">
+  <input type="text" id="userName" placeholder="Your Name" value="TestUser">
+  <button onclick="joinRoom()">Join Room</button>
+  <br><br>
+  <div id="messages"></div>
+  <br>
+  <input type="text" id="msgInput" placeholder="Message">
+  <button onclick="sendMsg()">Send</button>
+  
+  <script>
+    const socket = io('http://localhost:3001', {
+      transports: ['websocket', 'polling']
+    });
+    
+    socket.on('connect', () => {
+      document.getElementById('status').innerHTML = '✅ Connected: ' + socket.id;
+      console.log('Connected:', socket.id);
+    });
+    
+    socket.on('disconnect', () => {
+      document.getElementById('status').innerHTML = '❌ Disconnected';
+    });
+    
+    socket.on('receive_message', (data) => {
+      console.log('Received:', data);
+      const div = document.createElement('div');
+      div.textContent = data.senderName + ': ' + data.message;
+      document.getElementById('messages').appendChild(div);
+    });
+    
+    socket.on('user_joined', (data) => {
+      const div = document.createElement('div');
+      div.textContent = '📢 ' + data.message;
+      div.style.color = 'green';
+      document.getElementById('messages').appendChild(div);
+    });
+    
+    function joinRoom() {
+      const roomId = document.getElementById('roomId').value;
+      const userName = document.getElementById('userName').value;
+      socket.emit('join_chat', {
+        requestId: roomId,
+        userId: 'test-user-' + Date.now(),
+        userName: userName,
+        userEmail: userName + '@test.com'
+      });
+      console.log('Joining room:', roomId);
+    }
+    
+    function sendMsg() {
+      const roomId = document.getElementById('roomId').value;
+      const msg = document.getElementById('msgInput').value;
+      socket.emit('send_message', {
+        requestId: roomId,
+        message: msg,
+        clientMessageId: Date.now() + '-' + Math.random()
+      });
+      document.getElementById('msgInput').value = '';
+    }
+  </script>
+</body>
+</html>

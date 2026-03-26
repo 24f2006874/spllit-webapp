@@ -1,0 +1,75 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    function isValidRide() {
+      let data = request.resource.data;
+      return data.keys().hasAll(['pickup', 'dropoff', 'dateTime', 'seats', 'status', 'createdBy'])
+        && data.pickup is string && data.pickup.size() > 0 && data.pickup.size() <= 200
+        && data.dropoff is string && data.dropoff.size() > 0 && data.dropoff.size() <= 200
+        && data.seats is number && data.seats >= 1 && data.seats <= 10
+        && data.status in ['available', 'completed'];
+    }
+    
+    function isValidRideRequest() {
+      let data = request.resource.data;
+      return data.keys().hasAll(['rideId', 'driverId', 'passengerId', 'status', 'pickup', 'dropoff'])
+        && data.status in ['pending', 'approved', 'rejected'];
+    }
+    
+    function isValidMessage() {
+      let data = request.resource.data;
+      return data.keys().hasAll(['requestId', 'message', 'senderId', 'timestamp', 'type'])
+        && data.message is string && data.message.size() > 0 && data.message.size() <= 1000
+        && data.type == 'message';
+    }
+    
+    // Rides collection
+    match /rides/{rideId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() 
+        && isOwner(request.resource.data.createdBy)
+        && isValidRide();
+      allow update: if isAuthenticated() 
+        && (isOwner(resource.data.createdBy) || isOwner(resource.data.createdBy))
+        && (resource.data.createdBy == request.resource.data.createdBy
+            || request.resource.data.status == 'completed');
+      allow delete: if isOwner(resource.data.createdBy);
+    }
+    
+    // Ride requests collection
+    match /rideRequests/{requestId} {
+      allow read: if isAuthenticated() 
+        && (resource.data.driverId == request.auth.uid 
+            || resource.data.passengerId == request.auth.uid);
+      allow create: if isAuthenticated() 
+        && isOwner(request.resource.data.passengerId)
+        && isValidRideRequest();
+      allow update: if isAuthenticated()
+        && (resource.data.driverId == request.auth.uid 
+            || resource.data.passengerId == request.auth.uid)
+        && request.resource.data.status in ['approved', 'rejected'];
+      allow delete: if isAuthenticated() 
+        && (resource.data.driverId == request.auth.uid 
+            || resource.data.passengerId == request.auth.uid);
+    }
+    
+    // Messages collection
+    match /messages/{messageId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() 
+        && isOwner(request.resource.data.senderId)
+        && isValidMessage();
+      allow update, delete: if isOwner(resource.data.senderId);
+    }
+  }
+}
