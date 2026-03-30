@@ -208,9 +208,30 @@ function Dashboard() {
 
   const handleRequestRide = async (ride) => {
     if (!user) return
-    
+
     try {
       setRequestingRideId(ride.id)
+      
+      const existing = await axios.get(
+        `${PB_URL}/api/collections/rideRequests/records`,
+        {
+          params: {
+            sort: '-createdAt',
+            perPage: 200
+          }
+        }
+      )
+
+      const alreadyRequested = (existing.data.items || []).some(
+        req => req.rideId === ride.id && 
+              req.passengerId === user.uid && 
+              (req.status === 'pending' || req.status === 'approved')
+      )
+
+      if (alreadyRequested) {
+        alert('You have already requested this ride.')
+        return
+      }
       
       await axios.post(`${PB_URL}/api/collections/rideRequests/records`, {
         rideId: ride.id,
@@ -232,10 +253,10 @@ function Dashboard() {
       alert('Ride request sent! Waiting for driver approval.')
       setIsProfileOpen(false)
     } catch {
-      alert('Failed to send ride request. Please try again.')
-    } finally {
-      setRequestingRideId(null)
-    }
+          alert('Failed to send ride request. Please try again.')
+      } finally {
+          setRequestingRideId(null)
+      }
   }
 
   const handleApproveRequest = async (requestId) => {
@@ -830,13 +851,14 @@ function Dashboard() {
 
       {isRequestNotificationOpen && (
         <RideRequestNotification
-          request={incomingRequest}
-          onApprove={handleApproveRequest}
-          onReject={() => {
-            setIsRequestNotificationOpen(false)
-            setIncomingRequest(null)
-          }}
-        />
+        request={incomingRequest}
+        onApprove={handleApproveRequest}
+         onReject={() => {
+          if (incomingRequest?.id) {
+            handleRejectRequest(incomingRequest.id)
+          }
+        }}
+      />
       )}
 
       <AcceptanceNotification
